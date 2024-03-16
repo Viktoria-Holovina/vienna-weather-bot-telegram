@@ -6,7 +6,9 @@
 import logging
 import json
 import requests
+import os
 
+from dotenv import load_dotenv
 from telegram import ForceReply, Update, User
 from telegram.ext import (
     Application,
@@ -19,6 +21,8 @@ from telegram.ext import (
 
 from coordinates import Coordinates
 from weather_forecast import WeatherForecast
+
+load_dotenv()
 
 # Enable logging
 logging.basicConfig(
@@ -129,10 +133,14 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def main() -> None:
     """Start the bot."""
+
+    telegram_bot_token = os.getenv("TELEGRAM_TOKEN")
+    if not telegram_bot_token:
+        raise Exception("Missing telegram bot token")
     # Create the Application and pass it your bot's token.
     application = (
         Application.builder()
-        .token("7117872312:AAH42Npu9ZJlNGS7KrB0Cn26K-fgtN-4q0E")
+        .token(telegram_bot_token)
         .build()
     )
 
